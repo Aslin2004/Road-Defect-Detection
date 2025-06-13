@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button[name="status"][value="Accepted"] {
+            background-color: #28a745;
+            color: white;
+        }
+        button[name="status"][value="Rejected"] {
+            background-color: #dc3545;
+            color: white;
+        }
+        button[name="status"][value="Pending"] {
+            background-color: #ffc107;
+            color: black;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #ff5722;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a:hover {
+            background: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ session['user'] }}</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>{{ task[2] }}</td>
+            <td>
+                {% if task[2] == "Pending" %}
+                    <form method="POST" action="{{ url_for('update_task_status') }}">
+                        <input type="hidden" name="task_id" value="{{ task[0] }}">
+                        <button type="submit" name="status" value="Accepted">Accept</button>
+                        <button type="submit" name="status" value="Rejected">Reject</button>
+                    </form>
+                {% elif task[2] == "Accepted" %}
+                    <form method="POST" action="{{ url_for('update_task_status') }}">
+                        <input type="hidden" name="task_id" value="{{ task[0] }}">
+                        <button type="submit" name="status" value="Finish">Finish</button>
+                    </form>
+                {% else %}
+                    {{ task[2] }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button[name="status"][value="Accepted"] {
+            background-color: #28a745;
+            color: white;
+        }
+        button[name="status"][value="Rejected"] {
+            background-color: #dc3545;
+            color: white;
+        }
+        button[name="status"][value="Pending"] {
+            background-color: #ffc107;
+            color: black;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #ff5722;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a:hover {
+            background: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Dashboard</h2>
+
+    <h3>Assigned Tasks</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>{{ task[2] }}</td>
+            <td>
+                <form action="{{ url_for('update_task_status') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="task_id" value="{{ task[0] }}">
+                    
+                    <button type="submit" name="status" value="Accepted" {% if task[2] == 'Accepted' %}disabled{% endif %}>Accept</button>
+                    <button type="submit" name="status" value="Rejected" {% if task[2] == 'Rejected' %}disabled{% endif %}>Reject</button> 
+                    <button type="submit" name="status" value="Pending" {% if task[2] == 'Pending' %}disabled{% endif %}>Pending</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+-->

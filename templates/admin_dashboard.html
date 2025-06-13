@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        select, button {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+        }
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+        img {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px 15px;
+            background: #dc3545;
+            color: white;
+            border-radius: 5px;
+        }
+        a:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Live Detection Feed</h2>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+
+    <h2>Unassigned Tasks</h2>
+    <table>
+        <tr><th>ID</th><th>Issue</th><th>Assign To</th></tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>
+                <form action="{{ url_for('assign_task') }}" method="POST">
+                    <input type="hidden" name="task_id" value="{{ task[0] }}">
+                    <select name="assigned_user">
+                        {% for user in users %}
+                        <option value="{{ user[0] }}">{{ user[0] }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Assign</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Task Status</h2>
+    <table>
+        <tr><th>ID</th><th>Issue</th><th>User</th></tr>
+        {% for task in assigned_tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>{{ task[6] }}</td>
+        <!--<td>{{ task[5] }}</td>
+            <td>
+                {% if task[5] == 'Rejected' %}
+                <form action="{{ url_for('reject_task') }}" method="POST">
+                    <input type="hidden" name="task_id" value="{{ task[0] }}">
+                    <button type="submit" class="reject-btn">Return to Unassigned</button>
+                </form>
+                {% endif %}
+            </td> -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        select, button {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        img {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px 15px;
+            background: #dc3545;
+            color: white;
+            border-radius: 5px;
+        }
+        a:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Live Detection Feed</h2>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+
+    <h2>Unassigned Tasks</h2>
+    <table>
+        <tr><th>ID</th><th>Issue</th><th>Assign To</th><th>Action</th></tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>
+                <form action="{{ url_for('assign_task') }}" method="POST">
+                    <input type="hidden" name="task_id" value="{{ task[0] }}">
+                    <select name="assigned_user">
+                        {% for user in users %}
+                        <option value="{{ user[0] }}">{{ user[0] }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Assign</button>
+                </form>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Task Status</h2>
+    <table>
+        <tr><th>ID</th><th>Issue</th><th>User</th></tr>
+        {% for task in assigned_tasks %}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td>{{ task[6] }}</td>
+            <td>{{ task[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+-->

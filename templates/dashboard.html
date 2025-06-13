@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        a[href*='accept_task'] {
+            background-color: #28a745;
+            color: white;
+        }
+        a[href*='accept_task']:hover {
+            background-color: #218838;
+        }
+        a[href*='reject_task'] {
+            background-color: #dc3545;
+            color: white;
+        }
+        a[href*='reject_task']:hover {
+            background-color: #c82333;
+        }
+        .logout {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #ff5722;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .logout:hover {
+            background: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ session['user'] }}</h2>
+    
+    <h3>Assigned Tasks</h3>
+    <table>
+        <tr>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task[1] }}</td>
+            <td>{{ task[6] }}</td>
+            <td>
+                {% if task[6] == 'Pending' %}
+                    <a href="{{ url_for('accept_task', task_id=task[0]) }}">✅ Accept</a> |
+                    <a href="{{ url_for('reject_task', task_id=task[0]) }}">❌ Reject</a>
+                {% else %}
+                    No Action
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

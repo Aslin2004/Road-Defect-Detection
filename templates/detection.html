@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YOLOv8 Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        img {
+            border: 3px solid #007bff;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            display: inline-block;
+        }
+        a[href*='dashboard'] {
+            background-color: #28a745;
+        }
+        a[href*='dashboard']:hover {
+            background-color: #218838;
+        }
+        a[href*='logout'] {
+            background-color: #dc3545;
+        }
+        a[href*='logout']:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Live Detection</h2>
+    <img src="{{ url_for('video_feed') }}" width="640">
+    <br>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a> |
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YOLOv8 Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        img {
+            border: 3px solid #007bff;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            display: inline-block;
+        }
+        a[href*='dashboard'] {
+            background-color: #28a745;
+        }
+        a[href*='dashboard']:hover {
+            background-color: #218838;
+        }
+        a[href*='logout'] {
+            background-color: #dc3545;
+        }
+        a[href*='logout']:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Live Detection</h2>
+    <img src="{{ url_for('video_feed') }}" width="640">
+    <br>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a> |
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
+-->
